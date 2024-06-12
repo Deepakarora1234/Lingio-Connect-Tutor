@@ -13,7 +13,7 @@ const Messages = ({ tutorId, userId }) => {
     const [initialMessages, setInitialMessages] = useState([]);
 
     useEffect(() => {
-        const newSocket = io('http://localhost:7000');
+        const newSocket = io('https://lingio-connect.onrender.com');
         setSocket(newSocket);
 
         newSocket.emit('joinRoom', { senderId: tutorId, receiverId: userId });
