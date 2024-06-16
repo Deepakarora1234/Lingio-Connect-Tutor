@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext';
 import io from 'socket.io-client';
 import {BsSend} from "react-icons/bs"
@@ -9,6 +9,7 @@ const Student = () => {
     const { tutor } = useAppContext();
     const [message, setMessage] = useState("");
     const [socket, setSocket] = useState(null);
+    const navigate = useNavigate()
 
     useEffect(() => {
         console.log("Home component rendered. Tutor:", tutor);
@@ -48,6 +49,10 @@ const Student = () => {
             setMessage("");
         }
     };
+    const handleClick = ()=>{
+        navigate(`/videocall/${studentId}`)
+
+    }
   return (
     <div>
      <form onSubmit={handleSubmit} className='border border-orange-200 flex flex-col p-3'>
@@ -73,7 +78,10 @@ const Student = () => {
                                 </button>
                             </div>
                         </div>
-                    </form>
+     </form>
+     <button onClick={handleClick} className='text-white border p-4 mt-4'>
+        Start Live session
+     </button>
       
     </div>
   )
