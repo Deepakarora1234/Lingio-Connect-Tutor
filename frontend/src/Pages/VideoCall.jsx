@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useParams, useNavigate } from 'react-router-dom';
-import { StreamChat } from 'stream-chat';
+// import { StreamChat } from 'stream-chat';
 import { useQuery } from 'react-query';
 import * as apiClient from '../apiClient.js';
 import {
