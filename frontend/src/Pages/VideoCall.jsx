@@ -1,12 +1,15 @@
-
 import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useParams, useNavigate } from 'react-router-dom';
+import { StreamChat } from 'stream-chat';
+import { useQuery } from 'react-query';
+import * as apiClient from '../apiClient.js';
 import {
   CallingState,
   StreamCall,
   SpeakerLayout,
   CallControls,
+  CallParticipantsList,
   StreamVideo,
   StreamTheme,
   StreamVideoClient,
@@ -17,46 +20,44 @@ import {
 import '@stream-io/video-react-sdk/dist/css/styles.css';
 import io from 'socket.io-client';
 
-
 const VideoCall = () => {
-  const { tutor } = useAppContext(); 
+  const { tutor } = useAppContext();
   const [socket, setSocket] = useState(null);
-
-  const tutorId = tutor[0]?._id;
-  const name = tutor[0]?.fullName
   const { studentId } = useParams();
+  const tutorId = tutor[0]?._id;
+  const name = tutor[0]?.fullName;
+  const navigate = useNavigate();
 
-  const apiKey = 'mmhfdzb5evj2';
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiUGFkbV9fQW1pZGFsYSIsImlzcyI6Imh0dHBzOi8vcHJvbnRvLmdldHN0cmVhbS5pbyIsInN1YiI6InVzZXIvUGFkbV9fQW1pZGFsYSIsImlhdCI6MTcxODM1MzczOSwiZXhwIjoxNzE4OTU4NTQ0fQ.rxXt4khjVNHlhASsVCiqcWDpCphlJXAJq-bVFQGBBZI'; // the token can be found in the "Credentials" section
-  const userId = 'Padm__Amidala'; 
-  const callId = `LingioConnect_${tutorId}`; 
+  const { data: tokenData, isLoading } = useQuery(
+    ['getToken', tutorId],
+    () => apiClient.getToken(tutorId),
+    { enabled: !!tutorId }
+  );
+
+  const token = tokenData?.token;
+
+  const apiKey = '9nrade67axhx';
+  const callId = `LingioConnect_${tutorId}`;
 
   useEffect(() => {
-    const newSocket = io('https://lingio-connect.onrender.com');
-    setSocket(newSocket);
+    if (tutorId && studentId) {
+      const newSocket = io('https://lingio-connect.onrender.com');
+      setSocket(newSocket);
 
-    newSocket.emit('joinRoom', { senderId: tutorId, receiverId: studentId });
-    newSocket.emit("sendCallId", {senderId: tutorId, receiverId: studentId,callId:callId })
+      newSocket.emit('joinRoom', { senderId: tutorId, receiverId: studentId });
+      newSocket.emit('sendCallId', { senderId: tutorId, receiverId: studentId, callId });
 
-    // newSocket.on('receiveMessage', (message) => {
-    //     setRealTimeMessages((prevMessages) => [...prevMessages, message]);
-    // });
-    
+      return () => newSocket.close();
+    }
+  }, [tutorId, studentId, callId]);
 
-    return () => newSocket.close();
-}, [tutorId, userId]);
-
-
-
-  
-  const navigate = useNavigate();
-  console.log('Home component rendered. Tutor:', tutor);
-  
-
+  if (isLoading || !token) {
+    return <div>Loading...</div>;
+  }
 
   const user = {
-    id: userId,
-    name: name,
+    id: tutorId,
+    name,
     image: 'https://getstream.io/random_svg/?id=oliver&name=Oliver',
   };
 
@@ -79,6 +80,7 @@ const VideoCall = () => {
       <StreamVideo client={client}>
         <StreamCall call={call}>
           <MyUILayout navigate={navigate} studentId={studentId} />
+          <CallParticipantsList />
         </StreamCall>
       </StreamVideo>
     </div>
@@ -94,8 +96,6 @@ export const MyUILayout = ({ navigate, studentId }) => {
   const callingState = useCallCallingState();
   const participantCount = useParticipantCount();
 
-
-
   if (callingState !== CallingState.JOINED) {
     return <div>Loading...</div>;
   }
@@ -103,7 +103,7 @@ export const MyUILayout = ({ navigate, studentId }) => {
   return (
     <StreamTheme>
       <SpeakerLayout participantsBarPosition="bottom" />
-      <CallControls onLeave={()=> navigate(`/student/${studentId}`)} />
+      <CallControls onLeave={() => navigate(`/student/${studentId}`)} />
     </StreamTheme>
   );
 };

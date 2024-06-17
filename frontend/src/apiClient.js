@@ -47,3 +47,19 @@ export const getMessages = async(tutorId, userId)=>{
 
     return response.json()
   }
+
+
+  export const getToken = async(tutorId)=>{
+    console.log(tutorId)
+    const response  = await fetch (`/api/tutor/getToken`,{
+      method:"POST",
+      headers:{
+        "Content-Type" :"application/json"
+      },
+      body:JSON.stringify({tutorId})
+    })
+
+    if(!response.ok)
+      throw new Error("Error getting token")
+    return response.json()
+  }
