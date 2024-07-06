@@ -1,0 +1,54 @@
+From af5e8d44b69bb8efac4f1b203dab658952613a9e Mon Sep 17 00:00:00 2001
+From: Deepak Arora <arroadeepak0817@gmail.com>
+Date: Wed, 12 Jun 2024 15:05:26 +0530
+Subject: [PATCH 2/7] first deploy
+
+---
+ backend/package.json | 2 ++
+ backend/src/index.js | 9 +++++++++
+ 2 files changed, 11 insertions(+)
+
+diff --git a/backend/package.json b/backend/package.json
+index 36a99d2..b8df6ab 100644
+--- a/backend/package.json
++++ b/backend/package.json
+@@ -6,7 +6,9 @@
+   "type": "module",
+   "scripts": {
+     "test": "echo \"Error: no test specified\" && exit 1",
++    "build" : "npm install",
+     "start": "node src/index.js"
++    
+   },
+   "author": "",
+   "license": "ISC",
+diff --git a/backend/src/index.js b/backend/src/index.js
+index c775037..2545b43 100644
+--- a/backend/src/index.js
++++ b/backend/src/index.js
+@@ -7,6 +7,8 @@ import path from "path"
+ import tutorRoutes from "../src/Routes/tutorRoutes.js"
+ import messageRoutes from "../src/Routes/messageRoutes.js"
+ 
++const __dirname = path.resolve()
++
+ await mongoose.connect("mongodb+srv://aroradeepak0817:IEXmL1e9UJBH2K61@cluster0.x9xhl3b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").then(()=> console.log("connected to database"))
+ const app = express()
+ app.use(express.json());
+@@ -23,6 +25,13 @@ app.use("/api/tutor", tutorRoutes)
+ app.use("/api/message", messageRoutes)
+ 
+ 
++app.use(express.static(path.join(__dirname, "../frontend/dist")))
++
++app.get("*", (req, res)=>{
++    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"))
++})
++
++
+ app.listen('5000',()=>{
+     console.log("server running on port 5000")
+ })
+-- 
+2.41.0.windows.3
+

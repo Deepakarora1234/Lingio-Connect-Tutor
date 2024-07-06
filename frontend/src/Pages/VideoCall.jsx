@@ -40,8 +40,8 @@ const VideoCall = () => {
   const callId = `LingioConnect_${tutorId}`;
 
   useEffect(() => {
-    
-      const newSocket = io('https://lingio-connect.onrender.com');
+      
+      const newSocket = io('https://lingio-connect-l8k2.onrender.com');
       setSocket(newSocket);
 
       newSocket.emit('joinRoom', { senderId: tutorId, receiverId: studentId });
@@ -51,9 +51,7 @@ const VideoCall = () => {
     
   }, [tutorId, studentId, callId]);
 
-  // if (isLoading || !token) {
-  //   return <div>Loading...</div>;
-  // }
+ 
 
   const user = {
     id: tutorId,
@@ -96,9 +94,7 @@ export const MyUILayout = ({ navigate, studentId }) => {
   const callingState = useCallCallingState();
   const participantCount = useParticipantCount();
 
-  // if (callingState !== CallingState.JOINED) {
-  //   return <div>Loading...</div>;
-  // }
+  
 
   return (
     <StreamTheme>

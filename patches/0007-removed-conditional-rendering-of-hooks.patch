@@ -1,0 +1,69 @@
+From cc68830529a21bf0dcd30c3600fc9737e676ff53 Mon Sep 17 00:00:00 2001
+From: Deepak Arora <arroadeepak0817@gmail.com>
+Date: Tue, 18 Jun 2024 16:51:43 +0530
+Subject: [PATCH 7/7] removed conditional rendering of hooks
+
+---
+ frontend/src/Pages/VideoCall.jsx | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/frontend/src/Pages/VideoCall.jsx b/frontend/src/Pages/VideoCall.jsx
+index 03727cf..2ca2f21 100644
+--- a/frontend/src/Pages/VideoCall.jsx
++++ b/frontend/src/Pages/VideoCall.jsx
+@@ -40,7 +40,7 @@ const VideoCall = () => {
+   const callId = `LingioConnect_${tutorId}`;
+ 
+   useEffect(() => {
+-    if (tutorId && studentId) {
++    
+       const newSocket = io('https://lingio-connect.onrender.com');
+       setSocket(newSocket);
+ 
+@@ -48,12 +48,12 @@ const VideoCall = () => {
+       newSocket.emit('sendCallId', { senderId: tutorId, receiverId: studentId, callId });
+ 
+       return () => newSocket.close();
+-    }
++    
+   }, [tutorId, studentId, callId]);
+ 
+-  if (isLoading || !token) {
+-    return <div>Loading...</div>;
+-  }
++  // if (isLoading || !token) {
++  //   return <div>Loading...</div>;
++  // }
+ 
+   const user = {
+     id: tutorId,
+@@ -90,15 +90,15 @@ const VideoCall = () => {
+ export default VideoCall;
+ 
+ export const MyUILayout = ({ navigate, studentId }) => {
+-  const call = useCall();
++  // const call = useCall();
+   const { useCallCallingState, useParticipantCount } = useCallStateHooks();
+ 
+   const callingState = useCallCallingState();
+   const participantCount = useParticipantCount();
+ 
+-  if (callingState !== CallingState.JOINED) {
+-    return <div>Loading...</div>;
+-  }
++  // if (callingState !== CallingState.JOINED) {
++  //   return <div>Loading...</div>;
++  // }
+ 
+   return (
+     <StreamTheme>
+@@ -136,4 +136,4 @@ export const MyFloatingLocalParticipant = (props) => {
+       <ParticipantView participant={participant} />
+     </div>
+   );
+-};
++};
+\ No newline at end of file
+-- 
+2.41.0.windows.3
+

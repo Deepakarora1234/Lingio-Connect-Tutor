@@ -13,7 +13,7 @@ const Messages = ({ tutorId, userId }) => {
     const [initialMessages, setInitialMessages] = useState([]);
 
     useEffect(() => {
-        const newSocket = io('https://lingio-connect.onrender.com');
+        const newSocket = io('https://lingio-connect-l8k2.onrender.com');
         setSocket(newSocket);
 
         newSocket.emit('joinRoom', { senderId: tutorId, receiverId: userId });
@@ -36,7 +36,7 @@ const Messages = ({ tutorId, userId }) => {
 
 
     return (
-        <div className=' '>
+        <div className='bg-black p-4 '>
             {initialMessages.length > 0 && (
                 <div className=''>
                     {initialMessages.map((message) => (

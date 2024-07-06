@@ -1,0 +1,39 @@
+From 33623d380fbe714241967019022a7bc5f4df1c27 Mon Sep 17 00:00:00 2001
+From: Deepak Arora <arroadeepak0817@gmail.com>
+Date: Wed, 12 Jun 2024 15:13:22 +0530
+Subject: [PATCH 3/7] real time messages
+
+---
+ frontend/src/Pages/Student.jsx       | 2 +-
+ frontend/src/components/Messages.jsx | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/frontend/src/Pages/Student.jsx b/frontend/src/Pages/Student.jsx
+index 21a17bc..9b7fd13 100644
+--- a/frontend/src/Pages/Student.jsx
++++ b/frontend/src/Pages/Student.jsx
+@@ -15,7 +15,7 @@ const Student = () => {
+     }, [tutor]);
+ 
+     useEffect(() => {
+-        const newSocket = io('http://localhost:7000'); 
++        const newSocket = io('https://lingio-connect.onrender.com'); 
+         setSocket(newSocket);
+         return () => newSocket.close();
+     }, []);
+diff --git a/frontend/src/components/Messages.jsx b/frontend/src/components/Messages.jsx
+index 0df047e..cfa08ad 100644
+--- a/frontend/src/components/Messages.jsx
++++ b/frontend/src/components/Messages.jsx
+@@ -13,7 +13,7 @@ const Messages = ({ tutorId, userId }) => {
+     const [initialMessages, setInitialMessages] = useState([]);
+ 
+     useEffect(() => {
+-        const newSocket = io('http://localhost:7000');
++        const newSocket = io('https://lingio-connect.onrender.com');
+         setSocket(newSocket);
+ 
+         newSocket.emit('joinRoom', { senderId: tutorId, receiverId: userId });
+-- 
+2.41.0.windows.3
+

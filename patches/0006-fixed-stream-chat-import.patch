@@ -1,0 +1,25 @@
+From 6832f70b30bf459322e88a0b4189abf10f728a8a Mon Sep 17 00:00:00 2001
+From: Deepak Arora <arroadeepak0817@gmail.com>
+Date: Mon, 17 Jun 2024 17:04:33 +0530
+Subject: [PATCH 6/7] fixed stream chat import
+
+---
+ frontend/src/Pages/VideoCall.jsx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/frontend/src/Pages/VideoCall.jsx b/frontend/src/Pages/VideoCall.jsx
+index 524b107..03727cf 100644
+--- a/frontend/src/Pages/VideoCall.jsx
++++ b/frontend/src/Pages/VideoCall.jsx
+@@ -1,7 +1,7 @@
+ import React, { useEffect, useState } from 'react';
+ import { useAppContext } from '../context/AppContext';
+ import { useParams, useNavigate } from 'react-router-dom';
+-import { StreamChat } from 'stream-chat';
++// import { StreamChat } from 'stream-chat';
+ import { useQuery } from 'react-query';
+ import * as apiClient from '../apiClient.js';
+ import {
+-- 
+2.41.0.windows.3
+
